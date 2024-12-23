@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revision Helper</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="diff_match_patch_uncompressed.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Revision Helper</h1>
+        <div class="text-inputs">
+            <div class="input-group">
+                <label for="original">Original Text:</label>
+                <textarea id="original" rows="10"></textarea>
+            </div>
+            <div class="input-group">
+                <label for="revised">Revised Text:</label>
+                <textarea id="revised" rows="10"></textarea>
+            </div>
+        </div>
+        <button id="compare">Compare Texts</button>
+        <div id="diff-display"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
