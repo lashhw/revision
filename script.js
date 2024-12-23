@@ -1,4 +1,6 @@
+const historyStack = [];
 document.getElementById('compare').addEventListener('click', compareTexts);
+document.getElementById('undo').addEventListener('click', undoLastChange);
 
 function compareTexts() {
     const original = document.getElementById('original').value;
@@ -75,6 +77,7 @@ function createDiffSegment() {
 }
 
 function acceptChange(segment) {
+    const oldHTML = segment.innerHTML;
     const deletions = segment.querySelectorAll('.deletion');
     const insertions = segment.querySelectorAll('.insertion');
     
@@ -82,10 +85,13 @@ function acceptChange(segment) {
     insertions.forEach(ins => ins.classList.remove('insertion'));
     
     segment.querySelector('.action-buttons').remove();
+    const newHTML = segment.innerHTML;
+    historyStack.push({ segment, oldHTML, newHTML });
     updateOriginalText();
 }
 
 function rejectChange(segment) {
+    const oldHTML = segment.innerHTML;
     const deletions = segment.querySelectorAll('.deletion');
     const insertions = segment.querySelectorAll('.insertion');
     
@@ -93,6 +99,23 @@ function rejectChange(segment) {
     insertions.forEach(ins => ins.remove());
     
     segment.querySelector('.action-buttons').remove();
+    const newHTML = segment.innerHTML;
+    historyStack.push({ segment, oldHTML, newHTML });
+    updateOriginalText();
+}
+
+function rebindActionsOnSegment(segment) {
+    const acceptBtn = segment.querySelector('.accept');
+    const rejectBtn = segment.querySelector('.reject');
+    if (acceptBtn) acceptBtn.onclick = () => acceptChange(segment);
+    if (rejectBtn) rejectBtn.onclick = () => rejectChange(segment);
+}
+
+function undoLastChange() {
+    const last = historyStack.pop();
+    if (!last) return;
+    last.segment.innerHTML = last.oldHTML;
+    rebindActionsOnSegment(last.segment);
     updateOriginalText();
 }
 
