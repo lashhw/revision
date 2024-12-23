@@ -75,7 +75,6 @@ function createDiffSegment() {
 }
 
 function acceptChange(segment) {
-    const original = document.getElementById('original');
     const deletions = segment.querySelectorAll('.deletion');
     const insertions = segment.querySelectorAll('.insertion');
     
