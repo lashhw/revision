@@ -115,9 +115,6 @@ function updateOriginalText() {
                 const deletions = node.querySelectorAll('.deletion');
                 if (deletions.length > 0) {
                     deletions.forEach(del => finalText += del.textContent);
-                } else {
-                    const content = node.querySelector('.diff-content');
-                    finalText += content.textContent;
                 }
             }
         }
