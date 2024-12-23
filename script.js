@@ -104,8 +104,7 @@ function updateOriginalText() {
         if (node.nodeType === Node.TEXT_NODE || node.tagName === 'SPAN') {
             // Regular text nodes and spans are unchanged text
             finalText += node.textContent;
-        } 
-        else if (node.classList.contains('diff-segment')) {
+        } else if (node.classList.contains('diff-segment')) {
             if (!node.querySelector('.action-buttons')) {
                 // Confirmed changes - use the current content
                 finalText += node.textContent;
