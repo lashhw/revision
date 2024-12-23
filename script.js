@@ -3,6 +3,7 @@ document.getElementById('compare').addEventListener('click', compareTexts);
 document.getElementById('undo').addEventListener('click', undoLastChange);
 
 function compareTexts() {
+    historyStack.length = 0; // Clear the history stack
     const original = document.getElementById('original').value;
     const revised = document.getElementById('revised').value;
     
@@ -85,8 +86,7 @@ function acceptChange(segment) {
     insertions.forEach(ins => ins.classList.remove('insertion'));
     
     segment.querySelector('.action-buttons').remove();
-    const newHTML = segment.innerHTML;
-    historyStack.push({ segment, oldHTML, newHTML });
+    historyStack.push({ segment, oldHTML });
     updateOriginalText();
 }
 
@@ -99,8 +99,7 @@ function rejectChange(segment) {
     insertions.forEach(ins => ins.remove());
     
     segment.querySelector('.action-buttons').remove();
-    const newHTML = segment.innerHTML;
-    historyStack.push({ segment, oldHTML, newHTML });
+    historyStack.push({ segment, oldHTML });
     updateOriginalText();
 }
 
