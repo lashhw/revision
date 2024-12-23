@@ -12,8 +12,6 @@ function compareTexts() {
 }
 
 function displayDiffs(diffs) {
-    console.log(diffs)
-
     const diffDisplay = document.getElementById('diff-display');
     diffDisplay.innerHTML = '';
     
@@ -101,6 +99,30 @@ function rejectChange(segment) {
 
 function updateOriginalText() {
     const diffDisplay = document.getElementById('diff-display');
-    const text = diffDisplay.textContent;
-    document.getElementById('original').value = text;
+    let finalText = '';
+    
+    for (const node of diffDisplay.childNodes) {
+        if (node.nodeType === Node.TEXT_NODE || node.tagName === 'SPAN') {
+            // Regular text nodes and spans are unchanged text
+            finalText += node.textContent;
+        } 
+        else if (node.classList.contains('diff-segment')) {
+            if (!node.querySelector('.action-buttons')) {
+                // Confirmed changes - use the current content
+                finalText += node.textContent;
+            } else {
+                // Unconfirmed changes - use only the original text (deletions)
+                // or text without deletions/insertions
+                const deletions = node.querySelectorAll('.deletion');
+                if (deletions.length > 0) {
+                    deletions.forEach(del => finalText += del.textContent);
+                } else {
+                    const content = node.querySelector('.diff-content');
+                    finalText += content.textContent;
+                }
+            }
+        }
+    }
+    
+    document.getElementById('original').value = finalText;
 }
